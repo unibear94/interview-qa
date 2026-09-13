@@ -1,11 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { supabase } from '../../lib/supabaseClient';
 
 export default function MyPage() {
   const [user, setUser] = useState(null);
   const [answers, setAnswers] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,6 +24,9 @@ export default function MyPage() {
         .eq('user_id', u.id)
         .order('created_at', { ascending: false });
       setAnswers(data || []);
+
+      const { data: adminRow } = await supabase.from('admins').select('email').eq('email', u.email).maybeSingle();
+      setIsAdmin(!!adminRow);
     }
     load();
   }, [router]);
@@ -42,6 +47,12 @@ export default function MyPage() {
         </div>
         <button className="secondary" onClick={handleLogout}>로그아웃</button>
       </div>
+
+      {isAdmin && (
+        <Link href="/admin" className="card" style={{ display: 'block', textDecoration: 'none', color: '#2563eb', fontWeight: 600, textAlign: 'center' }}>
+          🛠 관리자 페이지 (학생 답변 &amp; 코멘트)
+        </Link>
+      )}
 
       <h3 style={{ fontSize: 14, marginTop: 20 }}>내가 작성한 답변</h3>
       {answers.length === 0 && <p style={{ color: '#888' }}>아직 작성한 답변이 없어요.</p>}

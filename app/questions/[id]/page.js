@@ -61,6 +61,7 @@ export default function QuestionDetail() {
       await supabase.from('answers').insert({
         question_id: id,
         user_id: user.id,
+        user_email: user.email,
         answer_type: answerType,
         answer_text: text,
       });

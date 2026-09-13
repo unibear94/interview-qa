@@ -1,0 +1,17 @@
+name: Keep Supabase Alive
+
+on:
+  schedule:
+    # 4일마다 한 번 실행 (Supabase 7일 비활성화 규칙보다 여유 있게)
+    - cron: '0 3 */4 * *'
+  workflow_dispatch: # 수동으로도 실행 가능
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase database
+        run: |
+          curl -s "${{ secrets.SUPABASE_URL }}/rest/v1/questions?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
