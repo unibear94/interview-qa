@@ -62,6 +62,7 @@ export default function QuestionDetail() {
         question_id: id,
         user_id: user.id,
         user_email: user.email,
+        user_name: user.user_metadata?.full_name || '',
         answer_type: answerType,
         answer_text: text,
       });

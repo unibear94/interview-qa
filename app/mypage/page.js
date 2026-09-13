@@ -42,8 +42,8 @@ export default function MyPage() {
     <div>
       <div className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <p style={{ fontWeight: 600, margin: 0 }}>{user.email}</p>
-          <p className="card-meta">작성한 답변 {answers.length}개</p>
+          <p style={{ fontWeight: 600, margin: 0 }}>{user.user_metadata?.full_name || user.email}</p>
+          <p className="card-meta">{user.email} · 작성한 답변 {answers.length}개</p>
         </div>
         <button className="secondary" onClick={handleLogout}>로그아웃</button>
       </div>

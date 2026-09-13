@@ -65,7 +65,7 @@ export default function AdminPage() {
           <p className="card-title">{a.questions?.question_text}</p>
           <p className="card-meta">
             {a.questions?.org_name} {a.questions?.department_track ? `· ${a.questions.department_track}` : ''} ·{' '}
-            {a.answer_type === 'prep' ? '사전 준비' : '실제 면접'} · {a.user_email || '학생'}
+            {a.answer_type === 'prep' ? '사전 준비' : '실제 면접'} · {a.user_name || a.user_email || '학생'}
           </p>
           <p style={{ fontSize: 13, background: '#f7f7f8', padding: 8, borderRadius: 6, marginTop: 6, whiteSpace: 'pre-wrap' }}>
             {a.answer_text || '(작성된 답변 없음)'}
