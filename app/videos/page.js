@@ -8,16 +8,26 @@ export default function VideosPage() {
   const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
   const [org, setOrg] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false); // 간단 버전: 로그인만 하면 등록 폼 노출. 필요시 role 체크로 교체.
+  const [isAdmin, setIsAdmin] = useState(false);
 
   async function loadVideos() {
     const { data } = await supabase.from('reference_videos').select('*').order('created_at', { ascending: false });
     setVideos(data || []);
   }
 
+  async function checkAdmin() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      setIsAdmin(false);
+      return;
+    }
+    const { data } = await supabase.from('admins').select('email').eq('email', user.email).maybeSingle();
+    setIsAdmin(!!data);
+  }
+
   useEffect(() => {
     loadVideos();
-    supabase.auth.getUser().then(({ data }) => setIsAdmin(!!data.user));
+    checkAdmin();
   }, []);
 
   async function handleAdd() {
